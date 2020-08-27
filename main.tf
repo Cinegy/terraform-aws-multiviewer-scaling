@@ -50,7 +50,7 @@ module "cinegy_base" {
 # create a sysadmin machine for RDP access
 module "sysadmin-vm" {
   source            = "app.terraform.io/cinegy/cinegy-base-winvm/aws"
-  version           = "0.0.15"
+  version           = "0.0.16"
 
   app_name          = local.app_name
   aws_region        = local.aws_region
@@ -80,7 +80,7 @@ EOF
 
 module "cinegy-mv" {
   source            = "app.terraform.io/cinegy/cinegy-base-winvm/aws"
-  version           = "0.0.15"
+  version           = "0.0.16"
 
   app_name          = local.app_name
   aws_region        = local.aws_region
