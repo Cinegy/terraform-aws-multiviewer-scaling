@@ -91,7 +91,7 @@ module "cinegy-mv" {
 
   //ami_name          = "Marketplace_Air_v14*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air injected automatically
   ami_name          = "Windows_Server-2019-English-Full-Base*"
-  instance_type     = "g3s.xlarge"
+  instance_type     = "g4dn.xlarge"
   host_name_prefix  = "MV${count.index+1}A"
   host_description  = "${upper(environment_name)}-Playout (MV) ${count.index+1}A"
   instance_subnet   = module.cinegy_base.public_subnets.a
