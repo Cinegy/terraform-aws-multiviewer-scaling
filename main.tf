@@ -62,7 +62,7 @@ module "sysadmin-vm" {
 
   ami_name          = "Windows_Server-2019-English-Full-Base*"
   host_name_prefix  = "SYSADMIN1A"
-  host_description  = "${upper(environment_name)}-Sysadmin Terminal (SYSADMIN) 1A"
+  host_description  = "${upper(local.environment_name)}-Sysadmin Terminal (SYSADMIN) 1A"
   instance_subnet   = module.cinegy_base.public_subnets.a
   instance_type     = "t3.medium"
 
@@ -97,7 +97,7 @@ module "cinegy-mv" {
   ami_name          = "Windows_Server-2019-English-Full-Base*"
   instance_type     = "g4dn.xlarge"
   host_name_prefix  = "MV${count.index+1}A"
-  host_description  = "${upper(environment_name)}-Playout (MV) ${count.index+1}A"
+  host_description  = "${upper(local.environment_name)}-Playout (MV) ${count.index+1}A"
   instance_subnet   = module.cinegy_base.public_subnets.a
   root_volume_size  = 65
 
