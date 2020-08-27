@@ -62,7 +62,7 @@ module "sysadmin-vm" {
 
   ami_name          = "Windows_Server-2019-English-Full-Base*"
   host_name_prefix  = "SYSADMIN1A"
-  host_description  = "${upper(local.environment_name)}-Sysadmin Terminal (SYSADMIN) 1A"
+  host_description  = "${upper(local.environment_name)}-MV Sysadmin Terminal (SYSADMIN) 1A"
   instance_subnet   = module.cinegy_base.public_subnets.a
   instance_type     = "t3.medium"
 
