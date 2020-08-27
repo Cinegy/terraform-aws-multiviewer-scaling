@@ -96,7 +96,7 @@ module "cinegy-mv" {
   ami_name          = "Windows_Server-2019-English-Full-Base*"
   instance_type     = "g4dn.xlarge"
   host_name_prefix  = "MV${count.index+1}A"
-  host_description  = "${upper(local.environment_name)}-Playout (MV) ${count.index+1}A"
+  host_description  = "${upper(local.environment_name)}-Multiviewer (MV) ${count.index+1}A"
   instance_subnet   = module.cinegy_base.public_subnets.a
   root_volume_size  = 65
 
@@ -104,4 +104,11 @@ module "cinegy-mv" {
     module.cinegy_base.remote_access_security_group,
     module.cinegy_base.remote_access_udp_6000_6100
   ]
+  
+  user_data_script_extension = <<EOF
+  InstallPowershellModules
+  Install-DefaultPackages
+  Install-Product -PackageName Cinegy-Multiviewer-Trunk -VersionTag dev
+  RenameHost
+EOF
 }
