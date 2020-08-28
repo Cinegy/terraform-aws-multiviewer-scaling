@@ -90,7 +90,7 @@ module "cinegy-mv" {
   vpc_id            = module.cinegy_base.main_vpc
   ad_join_doc_name  = module.cinegy_base.ad_join_doc_name
 
-  count = 3
+  count = 6
 
   //ami_name        = "Marketplace_Air_v14*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air injected automatically
   ami_name          = "Windows_Server-2019-English-Full-Base*"
@@ -113,7 +113,7 @@ module "cinegy-mv" {
   Install-CinegyPowershellModules
   Install-DefaultPackages
   Get-AwsLicense -UseTaggedHostname $true
-  
+
   Install-Product -PackageName Cinegy-Multiviewer-Trunk -VersionTag dev
   Install-Product -PackageName Thirdparty-AirNvidiaAwsDrivers-v14.x -VersionTag dev
   RenameHost
