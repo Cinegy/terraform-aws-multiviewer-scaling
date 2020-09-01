@@ -51,6 +51,7 @@ module "cinegy_base" {
 module "sysadmin-vm" {
   source            = "app.terraform.io/cinegy/cinegy-base-winvm/aws"
   version           = "0.0.17"
+  count             = 0 #disabled by default
 
   app_name          = local.app_name
   aws_region        = local.aws_region
@@ -64,7 +65,7 @@ module "sysadmin-vm" {
   host_name_prefix  = "SYSADMIN1A"
   host_description  = "${upper(local.environment_name)}-MV Sysadmin Terminal (SYSADMIN) 1A"
   instance_subnet   = module.cinegy_base.public_subnets.a
-  instance_type     = "t3.medium"
+  instance_type     = "t3.small"
 
   security_groups = [
     module.cinegy_base.remote_access_security_group,
@@ -90,9 +91,9 @@ module "cinegy-mv" {
   vpc_id            = module.cinegy_base.main_vpc
   ad_join_doc_name  = module.cinegy_base.ad_join_doc_name
 
-  count = 6
+  count = 1
 
-  //ami_name        = "Marketplace_Air_v14*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air injected automatically
+  //ami_name        = "Marketplace_Air_v14*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air / MV injected automatically
   ami_name          = "Windows_Server-2019-English-Full-Base*"
   instance_type     = "g4dn.2xlarge"
   host_name_prefix  = "MV${count.index+1}A"
