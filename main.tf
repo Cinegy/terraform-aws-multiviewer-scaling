@@ -13,22 +13,19 @@ terraform {
 locals {
   app_name = "multiviewer-scaletest"
   aws_region = "eu-west-1"
-  customer_tag = "IABM"
+  customer_tag = "Cinegy"
   environment_name = "demo"
 }
 
 # define the specific providers, including providers required to pass into modules
 provider "aws" {
   region  = local.aws_region
-  version = "~> 2.70"
 }
 
 provider "tls" {
-  version = "~> 2.2"
 }
 
 provider "template" {
-  version = "~> 2.1.2"
 }
 
 # install the base infrastructure required to support other module elements
@@ -41,47 +38,14 @@ module "cinegy_base" {
   customer_tag = local.customer_tag
   environment_name = local.environment_name
 
-
   aws_secrets_privatekey_arn = "arn:aws:secretsmanager:eu-west-1:564731076164:secret:cinegy-qa/privatekey.pem-ChNfQs"
   domain_name = var.domain_name
   domain_admin_password = var.domain_admin_password
 }
 
-# create a sysadmin machine for RDP access
-module "sysadmin-vm" {
-  source            = "app.terraform.io/cinegy/cinegy-base-winvm/aws"
-  version           = "0.0.17"
-  count             = 0 #disabled by default
-
-  app_name          = local.app_name
-  aws_region        = local.aws_region
-  customer_tag      = local.customer_tag
-  environment_name  = local.environment_name  
-  instance_profile  = module.cinegy_base.instance_profile_default_ec2_instance_name
-  vpc_id            = module.cinegy_base.main_vpc
-  ad_join_doc_name  = module.cinegy_base.ad_join_doc_name
-
-  ami_name          = "Windows_Server-2019-English-Full-Base*"
-  host_name_prefix  = "SYSADMIN1A"
-  host_description  = "${upper(local.environment_name)}-MV Sysadmin Terminal (SYSADMIN) 1A"
-  instance_subnet   = module.cinegy_base.public_subnets.a
-  instance_type     = "t3.small"
-
-  security_groups = [
-    module.cinegy_base.remote_access_security_group,
-    module.cinegy_base.remote_access_udp_6000_6100
-  ]
-
-  user_data_script_extension = <<EOF
-  InstallPowershellModules
-  Install-DefaultPackages
-  RenameHost
-EOF
-}
-
 module "cinegy-mv" {
   source            = "app.terraform.io/cinegy/cinegy-base-winvm/aws"
-  version           = "0.0.17"
+  version           = "0.0.28"
 
   app_name          = local.app_name
   aws_region        = local.aws_region
@@ -93,9 +57,9 @@ module "cinegy-mv" {
 
   count = 1
 
-  //ami_name        = "Marketplace_Air_v14*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air / MV injected automatically
-  ami_name          = "Windows_Server-2019-English-Full-Base*"
-  instance_type     = "g4dn.2xlarge"
+  ami_name        = "Air_MV_Cap_v15_Marketplace*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air / MV injected automatically
+  //ami_name          = "Windows_Server-2019-English-Full-Base*"
+  instance_type     = "g3s.xlarge"
   host_name_prefix  = "MV${count.index+1}A"
   host_description  = "${upper(local.environment_name)}-Multiviewer (MV) ${count.index+1}A"
   instance_subnet   = module.cinegy_base.public_subnets.a
