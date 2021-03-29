@@ -57,7 +57,7 @@ module "cinegy-mv" {
 
   count = 1
 
-  ami_name        = "Air_MV_Cap_v15_Marketplace*" - use this AMI if you are not running from a Cinegy AWS account to get licenses for Air / MV injected automatically
+  ami_name          = "Air_MV_Cap_v15_Marketplace*" //- use this AMI if you are not running from a Cinegy AWS account to get licenses for Air / MV injected automatically
   //ami_name          = "Windows_Server-2019-English-Full-Base*"
   instance_type     = "g3s.xlarge"
   host_name_prefix  = "MV${count.index+1}A"
